@@ -24,7 +24,7 @@ mongoose
 
 app.use(
   cors({
-    origin: "http://l192.168.1.3:5173",
+    origin: "https://react-ecommarce-backend.onrender.com",
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
