@@ -24,7 +24,7 @@ mongoose
 
 app.use(
   cors({
-    origin: ["https://ecommarce-flax.vercel.app/","http://localhost:5173"],
+    origin: ["https://ecommarce-flax.vercel.app","http://localhost:5173"],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
