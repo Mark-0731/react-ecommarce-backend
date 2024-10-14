@@ -36,25 +36,74 @@ const registerUser = async (req, res) => {
 };
 
 //login
+// const loginUser = async (req, res) => {
+//   const { email, password } = req.body;
+//   try {
+//     const checkUser = await User.findOne({ email });
+//     if (!checkUser)
+//       return res.json({
+//         success: false,
+//         message: "User doesn't exists! Please register first",
+//       });
+
+//     const checkPasswordMatch = await bcrypt.compare(
+//       password,
+//       checkUser.password
+//     );
+//     if (!checkPasswordMatch)
+//       return res.json({
+//         success: false,
+//         message: "Incorrect password! Please try again",
+//       });
+
+//     const token = jwt.sign(
+//       {
+//         id: checkUser._id,
+//         role: checkUser.role,
+//         email: checkUser.email,
+//         userName: checkUser.userName,
+//       },
+//       "CLIENT_SECRET_KEY",
+//       { expiresIn: "60m" }
+//     );
+
+//     res.cookie("token", token, { httpOnly: true, secure: false }).json({
+//       success: true,
+//       message: "Logged in successfully",
+//       user: {
+//         email: checkUser.email,
+//         role: checkUser.role,
+//         id: checkUser._id,
+//         userName: checkUser.userName,
+//       },
+//     });
+//   } catch (e) {
+
+//     res.status(500).json({
+//       success: false,
+//       message: "Some error occured",
+//     });
+//   }
+// };
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     const checkUser = await User.findOne({ email });
-    if (!checkUser)
+    if (!checkUser) {
       return res.json({
         success: false,
-        message: "User doesn't exists! Please register first",
+        message: "User doesn't exist! Please register first",
       });
+    }
 
-    const checkPasswordMatch = await bcrypt.compare(
-      password,
-      checkUser.password
-    );
-    if (!checkPasswordMatch)
+    const checkPasswordMatch = await bcrypt.compare(password, checkUser.password);
+    if (!checkPasswordMatch) {
       return res.json({
         success: false,
         message: "Incorrect password! Please try again",
       });
+    }
 
     const token = jwt.sign(
       {
@@ -64,12 +113,14 @@ const loginUser = async (req, res) => {
         userName: checkUser.userName,
       },
       "CLIENT_SECRET_KEY",
-      { expiresIn: "60m" }
+      { expiresIn: "2d" } // Token expiration set to 2 days
     );
 
-    res.cookie("token", token, { httpOnly: true, secure: false }).json({
+    // Send token in response
+    return res.json({
       success: true,
       message: "Logged in successfully",
+      token,
       user: {
         email: checkUser.email,
         role: checkUser.role,
@@ -78,10 +129,9 @@ const loginUser = async (req, res) => {
       },
     });
   } catch (e) {
-
     res.status(500).json({
       success: false,
-      message: "Some error occured",
+      message: "An error occurred",
     });
   }
 };
