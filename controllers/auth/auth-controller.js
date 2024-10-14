@@ -115,7 +115,7 @@ const loginUser = async (req, res) => {
       "CLIENT_SECRET_KEY",
       { expiresIn: "2d" } // Token expiration set to 2 days
     );
-
+console.log("token=====>",token);
     // Send token in response
     return res.json({
       success: true,
